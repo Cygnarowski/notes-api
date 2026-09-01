@@ -6,6 +6,10 @@ import noteController from "../controllers/api/note-controller.js";
 const router = new express.Router();
 
 router.get("/health", healthCheck);
-router.post("/add", noteController.createNote);
+router.get("/notes/:id", noteController.showNote);
+router.post("/notes", noteController.createNote);
+router.patch("/notes/:id", noteController.updateNote);
+router.delete("/notes/:id", noteController.removeNote);
+router.get("/notes", noteController.showNotes);
 
 export default router;
