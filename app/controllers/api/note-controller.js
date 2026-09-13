@@ -1,5 +1,4 @@
 import Note from "../../db/models/note.js";
-import mongoose from "mongoose";
 import ApiError from "../../utils/ApiError.js";
 
 class NoteController {
@@ -17,7 +16,6 @@ class NoteController {
   };
 
   createNote = async (req, res, next) => {
-    console.log(req.body);
     try {
       const note = new Note({
         id: req.body._id,
@@ -77,10 +75,28 @@ class NoteController {
 
   showNotes = async (req, res, next) => {
     try {
-      const notes = await Note.find({});
-      if (notes.length === 0) {
-        return next(new ApiError("The notes do not exist.", 404, "error"));
+      const filter = {};
+      if (req.query.id) {
+        filter._id = req.query.id;
       }
+      if (req.query.title) {
+        const titleSearchField = req.query.content;
+        const regex = new RegExp(titleSearchField, "i");
+        filter.title = regex;
+      }
+      if (req.query.content) {
+        const contentSearchField = req.query.content;
+        const regex = new RegExp(contentSearchField, "i");
+        filter.content = regex;
+      }
+      if (req.query.tag) {
+        filter.tag = req.query.tag;
+      }
+      if (req.query.status) {
+        filter.status = req.query.status;
+      }
+      console.log(filter);
+      const notes = await Note.find(filter);
       return res.status(200).json({ notes });
     } catch (err) {
       return next(err);
