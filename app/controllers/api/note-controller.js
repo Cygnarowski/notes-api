@@ -74,29 +74,37 @@ class NoteController {
   };
 
   showNotes = async (req, res, next) => {
+    const { id, title, content, tag, status, order } = req.query;
+    const allowedSortFields = ["date"];
+    const sortField = allowedSortFields.includes(req.query.sort)
+      ? req.query.sort
+      : "date";
+    let sortOrder = -1;
+    if (order !== "desc") {
+      sortOrder = 1;
+    }
     try {
       const filter = {};
-      if (req.query.id) {
-        filter._id = req.query.id;
+      if (id) {
+        filter._id = id;
       }
-      if (req.query.title) {
-        const titleSearchField = req.query.content;
+      if (title) {
+        const titleSearchField = title;
         const regex = new RegExp(titleSearchField, "i");
         filter.title = regex;
       }
-      if (req.query.content) {
-        const contentSearchField = req.query.content;
+      if (content) {
+        const contentSearchField = content;
         const regex = new RegExp(contentSearchField, "i");
         filter.content = regex;
       }
-      if (req.query.tag) {
-        filter.tag = req.query.tag;
+      if (tag) {
+        filter.tag = tag;
       }
-      if (req.query.status) {
-        filter.status = req.query.status;
+      if (status) {
+        filter.status = status;
       }
-      console.log(filter);
-      const notes = await Note.find(filter);
+      const notes = await Note.find(filter).sort({ [sortField]: sortOrder });
       return res.status(200).json({ notes });
     } catch (err) {
       return next(err);
