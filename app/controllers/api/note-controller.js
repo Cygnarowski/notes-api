@@ -75,14 +75,7 @@ class NoteController {
 
   showNotes = async (req, res, next) => {
     const { id, title, content, tag, status, order } = req.query;
-    const allowedSortFields = ["date"];
-    const sortField = allowedSortFields.includes(req.query.sort)
-      ? req.query.sort
-      : "date";
-    let sortOrder = -1;
-    if (order !== "desc") {
-      sortOrder = 1;
-    }
+
     try {
       const filter = {};
       if (id) {
@@ -104,8 +97,37 @@ class NoteController {
       if (status) {
         filter.status = status;
       }
-      const notes = await Note.find(filter).sort({ [sortField]: sortOrder });
-      return res.status(200).json({ notes });
+
+      const allowedSortFields = ["date"];
+      const sortField = allowedSortFields.includes(req.query.sort)
+        ? req.query.sort
+        : "date";
+      let sortOrder = -1;
+      if (order !== "desc") {
+        sortOrder = 1;
+      }
+
+      const pageNumber = Number(req.query.page);
+      const limitNumber = Number(req.query.limit);
+      const validPage =
+        Number.isInteger(pageNumber) && pageNumber > 0 ? pageNumber : 1;
+      const validLimit =
+        Number.isInteger(limitNumber) && limitNumber > 0 ? limitNumber : 1;
+      const skip = (validPage - 1) * validLimit;
+      const notes = await Note.find(filter)
+        .sort({ [sortField]: sortOrder })
+        .skip(skip)
+        .limit(validLimit);
+      const totalResults = await Note.countDocuments(filter);
+      const totalPages = Math.ceil(totalResults / validLimit);
+
+      return res.status(200).json({
+        page: validPage,
+        limit: validLimit,
+        totalResults,
+        totalPages,
+        notes,
+      });
     } catch (err) {
       return next(err);
     }
