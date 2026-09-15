@@ -106,13 +106,8 @@ class NoteController {
       if (order !== "desc") {
         sortOrder = 1;
       }
-
-      const pageNumber = Number(req.query.page);
-      const limitNumber = Number(req.query.limit);
-      const validPage =
-        Number.isInteger(pageNumber) && pageNumber > 0 ? pageNumber : 1;
-      const validLimit =
-        Number.isInteger(limitNumber) && limitNumber > 0 ? limitNumber : 1;
+      const validPage = req.validated.query.page;
+      const validLimit = req.validated.query.limit;
       const skip = (validPage - 1) * validLimit;
       const notes = await Note.find(filter)
         .sort({ [sortField]: sortOrder })
