@@ -1,5 +1,6 @@
 import Note from "../../db/models/note.js";
 import ApiError from "../../utils/ApiError.js";
+import QueryBuilder from "../../utils/QueryBuilder.js";
 
 class NoteController {
   showNote = async (req, res, next) => {
@@ -74,51 +75,23 @@ class NoteController {
   };
 
   showNotes = async (req, res, next) => {
-    const { id, title, content, tag, status, order } = req.query;
-
     try {
-      const filter = {};
-      if (id) {
-        filter._id = id;
-      }
-      if (title) {
-        const titleSearchField = title;
-        const regex = new RegExp(titleSearchField, "i");
-        filter.title = regex;
-      }
-      if (content) {
-        const contentSearchField = content;
-        const regex = new RegExp(contentSearchField, "i");
-        filter.content = regex;
-      }
-      if (tag) {
-        filter.tag = tag;
-      }
-      if (status) {
-        filter.status = status;
-      }
-
-      const allowedSortFields = ["date"];
-      const sortField = allowedSortFields.includes(req.query.sort)
-        ? req.query.sort
-        : "date";
-      let sortOrder = -1;
-      if (order !== "desc") {
-        sortOrder = 1;
-      }
-      const validPage = req.validated.query.page;
-      const validLimit = req.validated.query.limit;
-      const skip = (validPage - 1) * validLimit;
-      const notes = await Note.find(filter)
-        .sort({ [sortField]: sortOrder })
-        .skip(skip)
-        .limit(validLimit);
-      const totalResults = await Note.countDocuments(filter);
-      const totalPages = Math.ceil(totalResults / validLimit);
-
+      const queryBuilder = new QueryBuilder(
+        Note.find(),
+        req.query,
+        req.validated.query,
+      );
+      queryBuilder.filter();
+      queryBuilder.sort();
+      queryBuilder.paginate();
+      const notes = await queryBuilder.query;
+      const totalResults = await Note.countDocuments(queryBuilder.filterQuery);
+      const totalPages = Math.ceil(
+        totalResults / queryBuilder.validatedQuery.limit,
+      );
       return res.status(200).json({
-        page: validPage,
-        limit: validLimit,
+        page: queryBuilder.validatedQuery.page,
+        limit: queryBuilder.validatedQuery.limit,
         totalResults,
         totalPages,
         notes,
