@@ -14,7 +14,11 @@ class UserController {
         password,
       });
       await user.save();
-      return res.status(201).json({ user });
+      return res.status(201).json({
+        user: user.email,
+        message: "The user has been created.",
+        status: "success",
+      });
     } catch (err) {
       return next(err);
     }

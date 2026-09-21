@@ -8,8 +8,8 @@ import {
   noteIdSchema,
   getNotesSchema,
   updateNoteSchema,
-  createUserSchema,
 } from "../validators/note-validator.js";
+import { createUserSchema } from "../validators/user-validator.js";
 import userController from "../controllers/api/user-controller.js";
 
 const router = new express.Router();
