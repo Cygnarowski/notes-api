@@ -45,3 +45,10 @@ export const getNotesSchema = z.object({
     limit: z.coerce.number().int().positive().max(50).default(1),
   }),
 });
+
+export const createUserSchema = z.object({
+  body: z.object({
+    email: z.string(),
+    password: z.string(),
+  }),
+});

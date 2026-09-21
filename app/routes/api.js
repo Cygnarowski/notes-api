@@ -8,7 +8,9 @@ import {
   noteIdSchema,
   getNotesSchema,
   updateNoteSchema,
+  createUserSchema,
 } from "../validators/note-validator.js";
+import userController from "../controllers/api/user-controller.js";
 
 const router = new express.Router();
 
@@ -22,5 +24,7 @@ router.patch(
 );
 router.delete("/notes/:id", validate(noteIdSchema), noteController.removeNote);
 router.get("/notes", validate(getNotesSchema), noteController.showNotes);
+
+router.post("/users", validate(createUserSchema), userController.createUser);
 
 export default router;
