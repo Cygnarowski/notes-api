@@ -1,4 +1,5 @@
 import User from "../../db/models/user.js";
+import authenticateUser from "../../services/user-service.js";
 import ApiError from "../../utils/ApiError.js";
 
 class UserController {
@@ -19,6 +20,16 @@ class UserController {
         message: "The user has been created.",
         status: "success",
       });
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  async loginUser(req, res, next) {
+    try {
+      const { email, password } = req.body;
+      const result = await authenticateUser(email, password);
+      return res.status(200).json(result);
     } catch (err) {
       return next(err);
     }

@@ -9,7 +9,10 @@ import {
   getNotesSchema,
   updateNoteSchema,
 } from "../validators/note-validator.js";
-import { createUserSchema } from "../validators/user-validator.js";
+import {
+  createUserSchema,
+  loginUserSchema,
+} from "../validators/user-validator.js";
 import userController from "../controllers/api/user-controller.js";
 
 const router = new express.Router();
@@ -26,5 +29,6 @@ router.delete("/notes/:id", validate(noteIdSchema), noteController.removeNote);
 router.get("/notes", validate(getNotesSchema), noteController.showNotes);
 
 router.post("/users", validate(createUserSchema), userController.createUser);
+router.post("/login", validate(loginUserSchema), userController.loginUser);
 
 export default router;
