@@ -13,7 +13,6 @@ const checkUser = async (email, password) => {
     password,
     existingUser.password,
   );
-  console.log(isPasswordCorrect);
 
   if (!isPasswordCorrect) {
     throw new ApiError("Invalid email or password", 401, "error");

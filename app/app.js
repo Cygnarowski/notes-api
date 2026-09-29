@@ -1,6 +1,6 @@
 import express from "express";
 import apiRouter from "./routes/api.js";
-import { errorHandler } from "./midllewares/error-handler.js";
+import { errorHandler } from "./middlewares/error-handler.js";
 
 const app = express();
 

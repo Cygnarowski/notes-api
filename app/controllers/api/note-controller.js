@@ -25,7 +25,7 @@ class NoteController {
         tag: req.body.tag,
         status: req.body.status,
         date: req.body.date,
-        user: "",
+        owner: req.user._id,
       });
       await note.save();
       return res.status(201).json({ note });

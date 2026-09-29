@@ -11,7 +11,7 @@ export const createNoteSchema = z.object({
     tag: z.string().optional(),
     status: z.boolean("Status is required"),
     date: z.string("Date is required"),
-    user: z.string().optional(),
+    owner: z.string().optional(),
   }),
 });
 
@@ -35,7 +35,7 @@ export const updateNoteSchema = z.object({
     tag: z.string().optional(),
     status: z.boolean("Status is required"),
     date: z.string("Date is required"),
-    user: z.string().optional(),
+    owner: z.string().optional(),
   }),
 });
 

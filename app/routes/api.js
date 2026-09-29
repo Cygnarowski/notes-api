@@ -2,7 +2,7 @@ import express from "express";
 
 import healthCheck from "../controllers/api/health-controller.js";
 import noteController from "../controllers/api/note-controller.js";
-import validate from "../midllewares/validate-middleware.js";
+import validate from "../middlewares/validate-middleware.js";
 import {
   createNoteSchema,
   noteIdSchema,
@@ -14,12 +14,18 @@ import {
   loginUserSchema,
 } from "../validators/user-validator.js";
 import userController from "../controllers/api/user-controller.js";
+import authorizeUser from "../middlewares/authorize-user-middleware.js";
 
 const router = new express.Router();
 
 router.get("/health", healthCheck);
 router.get("/notes/:id", validate(noteIdSchema), noteController.showNote);
-router.post("/notes", validate(createNoteSchema), noteController.createNote);
+router.post(
+  "/notes",
+  validate(createNoteSchema),
+  authorizeUser,
+  noteController.createNote,
+);
 router.patch(
   "/notes/:id",
   validate(updateNoteSchema),

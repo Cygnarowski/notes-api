@@ -26,8 +26,10 @@ const noteSchema = new Schema({
     type: String,
     required: [true, "Field is required"],
   },
-  user: {
-    type: String,
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
 });
 
