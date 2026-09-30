@@ -19,7 +19,12 @@ import authorizeUser from "../middlewares/authorize-user-middleware.js";
 const router = new express.Router();
 
 router.get("/health", healthCheck);
-router.get("/notes/:id", validate(noteIdSchema), noteController.showNote);
+router.get(
+  "/notes/:id",
+  validate(noteIdSchema),
+  authorizeUser,
+  noteController.showNote,
+);
 router.post(
   "/notes",
   validate(createNoteSchema),
@@ -29,10 +34,21 @@ router.post(
 router.patch(
   "/notes/:id",
   validate(updateNoteSchema),
+  authorizeUser,
   noteController.updateNote,
 );
-router.delete("/notes/:id", validate(noteIdSchema), noteController.removeNote);
-router.get("/notes", validate(getNotesSchema), noteController.showNotes);
+router.delete(
+  "/notes/:id",
+  validate(noteIdSchema),
+  authorizeUser,
+  noteController.removeNote,
+);
+router.get(
+  "/notes",
+  validate(getNotesSchema),
+  authorizeUser,
+  noteController.showNotes,
+);
 
 router.post("/users", validate(createUserSchema), userController.createUser);
 router.post("/login", validate(loginUserSchema), userController.loginUser);

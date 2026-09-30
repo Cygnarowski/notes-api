@@ -6,7 +6,7 @@ class NoteController {
   showNote = async (req, res, next) => {
     const id = req.params.id;
     try {
-      const note = await Note.findById(id);
+      const note = await Note.findOne({ _id: id, owner: req.user._id });
       if (!note) {
         return next(new ApiError("The note does not exist.", 404, "error"));
       }
@@ -37,7 +37,10 @@ class NoteController {
   updateNote = async (req, res, next) => {
     const id = req.params.id;
     try {
-      const note = await Note.findById(id);
+      const note = await Note.findOne({ _id: id, owner: req.user._id });
+      if (!note) {
+        return next(new ApiError("Unauthorized", 401, "error"));
+      }
       if (req.body.title) {
         note.title = req.body.title;
       }
@@ -66,8 +69,11 @@ class NoteController {
   removeNote = async (req, res, next) => {
     const id = req.params.id;
     try {
-      const note = await Note.findById(id);
-      await Note.deleteOne({ _id: id });
+      const note = await Note.findOne({ _id: id, owner: req.user._id });
+      if (!note) {
+        return next(new ApiError("Unauthorized", 401, "error"));
+      }
+      await Note.deleteOne({ _id: id, owner: req.user._id });
       return res.status(200).json({});
     } catch (err) {
       return next(err);
@@ -77,7 +83,7 @@ class NoteController {
   showNotes = async (req, res, next) => {
     try {
       const queryBuilder = new QueryBuilder(
-        Note.find(),
+        Note.find({ owner: req.user._id }),
         req.query,
         req.validated.query,
       );
