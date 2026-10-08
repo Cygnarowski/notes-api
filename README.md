@@ -27,6 +27,7 @@ https://github.com/cygnarowski/notes-api.git
 - Node v24
 - Express
 - MongoDB
+- Jest
 
 
 ## Installation
