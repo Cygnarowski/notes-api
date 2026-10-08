@@ -13,7 +13,9 @@ https://github.com/cygnarowski/notes-api.git
 
 ## Features
 
-- Displaying a list of notes
+- User registration
+- User login with JWT authentication
+- Displaying notes belonging to the authenticated user
 - Adding new note
 - Editing existing note
 - Removing notes
