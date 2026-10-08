@@ -15,6 +15,12 @@ export function errorHandler(err, req, res, next) {
     });
   }
 
+  if (err.name === "CastError") {
+    return res.status(400).json({
+      status: "error",
+      message: "Invalid note id",
+    });
+  }
   return res.status(500).json({
     status: "error",
     message: "Internal server error",
