@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import ApiError from "../../utils/ApiError.js";
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   email: {
     type: String,
     required: [true, "Field is required"],
+    unique: true,
   },
   password: {
     type: String,
@@ -27,6 +29,13 @@ userSchema.pre("save", async function () {
   const salt = await bcrypt.genSalt(12);
   const hash = await bcrypt.hash(user.password, salt);
   user.password = hash;
+});
+
+userSchema.post("save", function (error, _doc, next) {
+  if (error.code === 11000) {
+    return next(new ApiError("Unable to complete registration.", 409, "error"));
+  }
+  next(error);
 });
 
 const User = mongoose.model("Users", userSchema);
