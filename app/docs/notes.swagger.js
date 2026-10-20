@@ -42,6 +42,20 @@
  *         schema:
  *           type: boolean
  *         description: Filter notes by status
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           enum: [createdAt]
+ *           default: createdAt
+ *         description: Sort notes by field
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *           default: desc
+ *         description: Sort order (ascending or descending)
  *     responses:
  *       200:
  *         description: User registered successfully
@@ -113,9 +127,6 @@
  *               status:
  *                 type: boolen
  *                 example: true
- *               date:
- *                 type: string
- *                 example: 20001020
  *     responses:
  *       201:
  *         description: Note created successfully
@@ -164,9 +175,6 @@
  *               status:
  *                 type: boolean
  *                 example: true
- *               date:
- *                 type: string
- *                 example: 20001020
  *     responses:
  *       200:
  *         description: Note updated successfully

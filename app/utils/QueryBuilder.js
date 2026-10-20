@@ -31,10 +31,10 @@ class QueryBuilder {
     return this;
   }
   sort() {
-    const allowedSortFields = ["date"];
+    const allowedSortFields = ["createdAt"];
     const sortField = allowedSortFields.includes(this.queryString.sort)
       ? this.queryString.sort
-      : "date";
+      : "createdAt";
     let sortOrder = -1;
     if (this.queryString.order !== "desc") {
       sortOrder = 1;

@@ -10,7 +10,6 @@ export const createNoteSchema = z.object({
     id: z.number().optional(),
     tag: z.string().optional(),
     status: z.boolean("Status is required"),
-    date: z.string("Date is required"),
     owner: z.string().optional(),
   }),
 });
@@ -34,7 +33,6 @@ export const updateNoteSchema = z.object({
     id: z.number().optional(),
     tag: z.string().optional(),
     status: z.boolean("Status is required"),
-    date: z.string("Date is required"),
     owner: z.string().optional(),
   }),
 });

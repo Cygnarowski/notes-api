@@ -24,7 +24,6 @@ class NoteController {
         content: req.body.content,
         tag: req.body.tag,
         status: req.body.status,
-        date: req.body.date,
         owner: req.user._id,
       });
       await note.save();
@@ -52,9 +51,6 @@ class NoteController {
       }
       if (req.body.status) {
         note.status = req.body.status;
-      }
-      if (req.body.date) {
-        note.date = req.body.date;
       }
       if (req.body.user) {
         note.user = req.body.user;
