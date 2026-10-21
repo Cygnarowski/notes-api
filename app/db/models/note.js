@@ -17,7 +17,7 @@ const noteSchema = new Schema(
       maxLength: [200, "The maximum number of characters is 200"],
     },
     tag: {
-      type: String,
+      type: Array,
     },
     status: {
       type: Boolean,

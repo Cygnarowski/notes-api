@@ -31,7 +31,7 @@ router.post(
   authorizeUser,
   noteController.createNote,
 );
-router.patch(
+router.put(
   "/notes/:id",
   validate(updateNoteSchema),
   authorizeUser,

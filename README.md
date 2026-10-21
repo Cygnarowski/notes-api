@@ -53,3 +53,9 @@ Make sure you have installed:
 - npm start
 
 The application will be available at: http://localhost:3000
+
+### API Documentation 
+API documentation is available through Swagger UI.
+
+After starting the server, open:
+http://localhost:3000/api-docs

@@ -49,7 +49,7 @@ class NoteController {
       if (req.body.tag) {
         note.tag = req.body.tag;
       }
-      if (req.body.status) {
+      if (req.body.status !== undefined) {
         note.status = req.body.status;
       }
       if (req.body.user) {

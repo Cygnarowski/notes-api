@@ -119,7 +119,7 @@
  *               content:
  *                 type: string
  *                 example: content
- *               tags:
+ *               tag:
  *                 type: array
  *                 items:
  *                   type: string
@@ -141,7 +141,7 @@
 /**
  * @openapi
  * /api/notes/{id}:
- *   patch:
+ *   put:
  *     summary: Update an existing note
  *     tags:
  *       - Notes
@@ -167,7 +167,7 @@
  *               content:
  *                 type: string
  *                 example: updated content
- *               tags:
+ *               tag:
  *                 type: array
  *                 items:
  *                   type: string

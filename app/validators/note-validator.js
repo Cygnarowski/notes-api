@@ -8,7 +8,7 @@ export const createNoteSchema = z.object({
       .min(3, "Content is required")
       .max(200, "Content is to long"),
     id: z.number().optional(),
-    tag: z.string().optional(),
+    tag: z.array(z.string().optional()),
     status: z.boolean("Status is required"),
     owner: z.string().optional(),
   }),
@@ -25,14 +25,19 @@ export const updateNoteSchema = z.object({
     id: z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid note id"),
   }),
   body: z.object({
-    title: z.string().min(3, "Title is required").max(50, "Title is to long"),
+    title: z
+      .string()
+      .min(3, "Title is required")
+      .max(50, "Title is to long")
+      .optional(),
     content: z
       .string()
       .min(3, "Content is required")
-      .max(200, "Content is to long"),
+      .max(200, "Content is to long")
+      .optional(),
     id: z.number().optional(),
-    tag: z.string().optional(),
-    status: z.boolean("Status is required"),
+    tag: z.array(z.string().optional()),
+    status: z.boolean("Status is required").optional(),
     owner: z.string().optional(),
   }),
 });
