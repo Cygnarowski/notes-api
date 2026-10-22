@@ -15,6 +15,7 @@ import {
 } from "../validators/user-validator.js";
 import userController from "../controllers/api/user-controller.js";
 import authorizeUser from "../middlewares/authorize-user-middleware.js";
+import loginRateLimiterMiddleware from "../middlewares/login-rate-limiter-middleware.js";
 
 const router = new express.Router();
 
@@ -51,6 +52,11 @@ router.get(
 );
 
 router.post("/users", validate(createUserSchema), userController.createUser);
-router.post("/login", validate(loginUserSchema), userController.loginUser);
+router.post(
+  "/login",
+  loginRateLimiterMiddleware,
+  validate(loginUserSchema),
+  userController.loginUser,
+);
 
 export default router;
