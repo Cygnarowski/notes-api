@@ -5,8 +5,6 @@
  *     summary: Register a new user
  *     tags:
  *       - Users
- *     security:
- *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:

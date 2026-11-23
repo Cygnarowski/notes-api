@@ -40,23 +40,16 @@ class NoteController {
       if (!note) {
         return next(new ApiError("Unauthorized", 401, "error"));
       }
-      if (req.body.title) {
-        note.title = req.body.title;
-      }
-      if (req.body.content) {
-        note.content = req.body.content;
-      }
+      note.title = req.body.title;
+      note.content = req.body.content;
       if (req.body.tag) {
         note.tag = req.body.tag;
+      } else {
+        note.tag;
       }
-      if (req.body.status !== undefined) {
-        note.status = req.body.status;
-      }
-      if (req.body.user) {
-        note.user = req.body.user;
-      }
+      note.status = req.body.status;
       await note.save();
-      return res.status(201).json({ note });
+      return res.status(200).json({ note });
     } catch (err) {
       return next(err);
     }
@@ -87,7 +80,9 @@ class NoteController {
       queryBuilder.sort();
       queryBuilder.paginate();
       const notes = await queryBuilder.query;
-      const totalResults = await Note.countDocuments(queryBuilder.filterQuery);
+      const totalResults = await Note.countDocuments(
+        queryBuilder.filterQuery && { owner: req.user._id },
+      );
       const totalPages = Math.ceil(
         totalResults / queryBuilder.validatedQuery.limit,
       );
